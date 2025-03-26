@@ -16,7 +16,7 @@ app.config["MONGO_URI"] = "mongodb://localhost:27017/AppDB"
 mongo = PyMongo(app)
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
-app.config['JWT_SECRET_KEY'] = 'your_secret_key'  # Set a secret key
+app.config['JWT_SECRET_KEY'] = 'your_secret_key'  
 
 # ----------------------- Authentication Routes -----------------------
 
