@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Page Not Found (404){% endblock %}
+
+{% block content %}
+<div class="container text-center py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg border-0 rounded-3 p-4">
+                <i class="fas fa-compass fa-5x text-primary mb-4"></i>
+                <h1 class="display-1 fw-bold">404</h1>
+                <h2 class="mb-3">Oops! Page Not Found.</h2>
+                <p class="lead mb-4">
+                    The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.
+                </p>
+                <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg rounded-pill">
+                    <i class="fas fa-home me-2"></i>Go to Homepage
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

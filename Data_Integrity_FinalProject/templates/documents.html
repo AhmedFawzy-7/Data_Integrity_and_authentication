@@ -1,0 +1,203 @@
+{% extends "base.html" %}
+
+{% block title %}My Documents{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header with Grid Background -->
+    <div class="d-flex justify-content-between align-items-center pb-3 mb-4" style="
+        border-bottom: 1px solid rgba(0, 255, 136, 0.3);
+        position: relative;
+    ">
+        <!-- Animated Grid Pattern -->
+        <div class="position-absolute top-0 start-0 w-100 h-100" style="
+            background-image: 
+                linear-gradient(rgba(0, 255, 136, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 136, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: -1;
+        "></div>
+        
+        <h1 class="h2" style="
+            color: #00ff88;
+            text-shadow: 0 0 8px rgba(0, 255, 136, 0.3);
+            font-family: 'Rajdhani', sans-serif;
+            letter-spacing: 1px;
+        ">
+            <i class="fas fa-database me-2"></i>{% if is_admin_user %}GLOBAL DOCUMENT ARCHIVE{% else %}SECURE VAULT ACCESS{% endif %}
+        </h1>
+        <a href="{{ url_for('documents.upload') }}" class="btn rounded-pill" style="
+            background: linear-gradient(135deg, #00ff88, #00cc6a);
+            color: #0a1a1a;
+            font-weight: 700;
+            border: none;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+            transition: all 0.3s ease;
+        ">
+            <i class="fas fa-plus-circle me-2"></i>NEW UPLOAD
+        </a>
+    </div>
+
+    {% if documents %}
+    <!-- Documents Table -->
+    <div class="table-responsive rounded-3" style="
+        background: rgba(10, 26, 26, 0.9);
+        border: 1px solid #00ff88;
+        box-shadow: 0 0 30px rgba(0, 255, 136, 0.2);
+        backdrop-filter: blur(5px);
+    ">
+        <table class="table table-hover align-middle mb-0">
+            <thead style="
+                background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 204, 106, 0.2));
+                color: #00ffcc;
+                border-bottom: 1px solid #00ff88;
+            ">
+                <tr>
+                    <th scope="col" style="padding: 1rem;">
+                        <i class="fas fa-file-code me-1"></i> ENCRYPTED ASSET
+                    </th>
+                    {% if is_admin_user %}
+                    <th scope="col" style="padding: 1rem;">
+                        <i class="fas fa-user-secret me-1"></i> OWNER ID
+                    </th>
+                    {% endif %}
+                    <th scope="col" style="padding: 1rem;">
+                        <i class="fas fa-clock me-1"></i> UPLOAD TIMESTAMP
+                    </th>
+                    <th scope="col" class="text-center" style="padding: 1rem;">
+                        <i class="fas fa-terminal me-1"></i> ACTIONS
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for document in documents %}
+                <tr style="
+                    border-bottom: 1px solid rgba(0, 255, 136, 0.1);
+                    transition: all 0.3s ease;
+                ">
+                    <td style="padding: 1rem; color: #8aaaaa;">
+                        <i class="fas fa-file-{{ document.filename.split('.')[-1]|lower }} me-2" style="color: #00ff88;"></i>
+                        <span style="font-family: 'Courier New', monospace;">{{ document.filename }}</span>
+                    </td>
+                    {% if is_admin_user %}
+                    <td style="padding: 1rem; color: #8aaaaa;">
+                        {{ document.owner.email if document.owner else 'SYSTEM' }}
+                    </td>
+                    {% endif %}
+                    <td style="padding: 1rem; color: #8aaaaa;">
+                        {{ document.upload_date.strftime('%Y-%m-%d %H:%M:%S') if document.upload_date else 'UNKNOWN' }}
+                    </td>
+                    <td class="text-center" style="padding: 1rem;">
+                        <a href="{{ url_for('documents.download_document', document_id=document.id) }}" class="btn btn-sm rounded-pill me-1" style="
+                            background: rgba(0, 255, 204, 0.2);
+                            color: #00ffcc;
+                            border: 1px solid #00ffcc;
+                            transition: all 0.3s ease;
+                        " title="Download">
+                            <i class="fas fa-download"></i> <span class="d-none d-md-inline">DECRYPT</span>
+                        </a>
+                        <form method="POST" action="{{ url_for('documents.delete_document', document_id=document.id) }}" style="display:inline;" onsubmit="return confirm('WARNING: This will permanently erase the encrypted asset. Confirm deletion?');">
+                            <button type="submit" class="btn btn-sm rounded-pill" style="
+                                background: rgba(255, 51, 102, 0.2);
+                                color: #ff3366;
+                                border: 1px solid #ff3366;
+                                transition: all 0.3s ease;
+                            " title="Delete">
+                                <i class="fas fa-trash-alt"></i> <span class="d-none d-md-inline">PURGE</span>
+                            </button>
+                        </form>
+                        {% if current_user.role == 'admin' %}
+                        <a href="{{ url_for('documents.edit_document', document_id=document.id) }}" class="btn btn-sm rounded-pill" style="
+                            background: rgba(0, 204, 255, 0.2);
+                            color: #00ccff;
+                            border: 1px solid #00ccff;
+                            transition: all 0.3s ease;
+                            margin-left: 0.5rem;
+                        " title="Edit">
+                            <i class="fas fa-edit"></i> <span class="d-none d-md-inline">MODIFY</span>
+                        </a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% include '_pagination.html' %}
+    {% else %}
+    <!-- Empty State -->
+    <div class="text-center p-5 rounded-3" style="
+        background: rgba(10, 26, 26, 0.9);
+        border: 1px dashed #00ff88;
+        box-shadow: 0 0 30px rgba(0, 255, 136, 0.1);
+    ">
+        <div style="
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #00ff88;
+        ">
+            <i class="fas fa-exclamation-triangle" style="font-size: 2rem; color: #00ff88;"></i>
+        </div>
+        <h4 style="color: #00ffcc; margin-bottom: 1rem;">VAULT EMPTY</h4>
+        <p style="color: #8aaaaa; max-width: 500px; margin: 0 auto 1.5rem;">
+            No encrypted assets detected in your secure storage quadrant.
+        </p>
+        <a href="{{ url_for('documents.upload') }}" class="btn rounded-pill" style="
+            background: linear-gradient(135deg, #00ff88, #00cc6a);
+            color: #0a1a1a;
+            font-weight: 700;
+            border: none;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+            padding: 0.75rem 2rem;
+        ">
+            <i class="fas fa-upload me-2"></i>INITIATE UPLOAD
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    /* Hover Effects */
+    tr:hover {
+        background: rgba(0, 255, 136, 0.05) !important;
+        box-shadow: inset 0 0 10px rgba(0, 255, 136, 0.1);
+    }
+    
+    .btn:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 0 20px rgba(0, 255, 136, 0.5) !important;
+    }
+    
+    /* Download Button Hover */
+    a[title="Download"]:hover {
+        background: rgba(0, 255, 204, 0.3) !important;
+        box-shadow: 0 0 15px rgba(0, 255, 204, 0.3) !important;
+    }
+    
+    /* Delete Button Hover */
+    button[title="Delete"]:hover {
+        background: rgba(255, 51, 102, 0.3) !important;
+        box-shadow: 0 0 15px rgba(255, 51, 102, 0.3) !important;
+    }
+    
+    /* Edit Button Hover */
+    a[title="Edit"]:hover {
+        background: rgba(0, 204, 255, 0.3) !important;
+        box-shadow: 0 0 15px rgba(0, 204, 255, 0.3) !important;
+    }
+    
+    /* File Type Icons */
+    .fa-file-pdf { color: #ff3366 !important; }
+    .fa-file-word { color: #00ccff !important; }
+    .fa-file-alt { color: #00ff88 !important; }
+    .fa-file-excel { color: #00cc6a !important; }
+</style>
+{% endblock %}

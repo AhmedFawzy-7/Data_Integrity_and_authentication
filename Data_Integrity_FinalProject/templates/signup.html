@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow-lg border-0 rounded-4" style="
+            background: rgba(10, 26, 26, 0.95);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            box-shadow: 0 0 25px rgba(0, 255, 136, 0.15), 
+                        inset 0 0 15px rgba(0, 255, 204, 0.05);
+        ">
+            <div class="card-body p-4 p-md-5">
+                <h2 class="card-title text-center mb-4 fw-bold" style="
+                    color: #00ff88;
+                    font-family: 'Rajdhani', sans-serif;
+                    letter-spacing: 1px;
+                    text-shadow: 0 0 8px rgba(0, 255, 136, 0.4);
+                ">
+                    Create Your <span style="color: #00ffcc;">SecureDocs</span> Account
+                </h2>
+
+                {% include '_flashes.html' %}
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <form method="POST" action="{{ url_for('auth.signup') }}" novalidate>
+                    <!-- Email -->
+                    <div class="mb-4 position-relative">
+                        <label for="email" class="form-label fw-medium" style="color: #66ffaa;">
+                            <i class="fas fa-envelope me-2"></i>Email Address
+                        </label>
+                        <input type="email" class="form-control form-control-lg rounded-pill" id="email" name="email" placeholder="e.g., user@domain.com" required style="
+                            background: rgba(10, 26, 26, 0.85);
+                            border: 1px solid #00ff88;
+                            color: #00ffcc;
+                            transition: all 0.3s ease;
+                            box-shadow: 0 0 10px rgba(0, 255, 136, 0.1);
+                        ">
+                        <div class="policy-box mt-2" style="color: #b2fbe2; font-size: 0.85rem;">
+                            <i class="fas fa-check-circle text-success me-1"></i>Enter a valid email. Disposable emails not allowed.
+                        </div>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="mb-4 position-relative">
+                        <label for="password" class="form-label fw-medium" style="color: #66ffaa;">
+                            <i class="fas fa-lock me-2"></i>Password
+                        </label>
+                        <input type="password" class="form-control form-control-lg rounded-pill" id="password" name="password" placeholder="Create a secure password" required minlength="12" style="
+                            background: rgba(10, 26, 26, 0.85);
+                            border: 1px solid #00ff88;
+                            color: #00ffcc;
+                            transition: all 0.3s ease;
+                            box-shadow: 0 0 10px rgba(0, 255, 136, 0.1);
+                        ">
+                        <button type="button" class="toggle-password" id="togglePassword" style="
+                            position: absolute;
+                            top: 50%;
+                            right: 15px;
+                            transform: translateY(-50%);
+                            background: none;
+                            border: none;
+                            color: #00ffcc;
+                        ">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <div class="policy-box mt-2" style="color: #b2fbe2; font-size: 0.85rem;">
+                            <i class="fas fa-check-circle text-success me-1"></i>At least 12 characters, with uppercase, lowercase, numbers, and special characters.
+                        </div>
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div class="mb-4 position-relative">
+                        <label for="confirm_password" class="form-label fw-medium" style="color: #66ffaa;">
+                            <i class="fas fa-lock me-2"></i>Confirm Password
+                        </label>
+                        <input type="password" class="form-control form-control-lg rounded-pill" id="confirm_password" name="confirm_password" placeholder="Re-enter your password" required minlength="12" style="
+                            background: rgba(10, 26, 26, 0.85);
+                            border: 1px solid #00ff88;
+                            color: #00ffcc;
+                            transition: all 0.3s ease;
+                            box-shadow: 0 0 10px rgba(0, 255, 136, 0.1);
+                        ">
+                        <button type="button" class="toggle-password" id="toggleConfirmPassword" style="
+                            position: absolute;
+                            top: 50%;
+                            right: 15px;
+                            transform: translateY(-50%);
+                            background: none;
+                            border: none;
+                            color: #00ffcc;
+                        ">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <div class="policy-box mt-2" style="color: #b2fbe2; font-size: 0.85rem;">
+                            <i class="fas fa-check-circle text-success me-1"></i>Must match the password above.
+                        </div>
+                    </div>
+
+                    <!-- Submit -->
+                    <div class="d-grid mb-4">
+                        <button type="submit" class="btn btn-lg rounded-pill" style="
+                            background: linear-gradient(135deg, #00ff88, #00cc6a);
+                            color: #0a1a1a;
+                            font-weight: 700;
+                            letter-spacing: 1px;
+                            border: none;
+                            box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+                            transition: all 0.3s ease;
+                            height: 50px;
+                        ">
+                            <i class="fas fa-user-plus me-2"></i>Sign Up
+                        </button>
+                    </div>
+                </form>
+
+                <div class="text-center mt-3">
+                    <p class="mb-0" style="color: #9debc7;">
+                        Already have an account?
+                        <a href="{{ url_for('auth.login') }}" class="fw-bold" style="
+                            color: #00ffcc;
+                            text-decoration: none;
+                            position: relative;
+                        ">
+                            Login
+                            <span style="
+                                position: absolute;
+                                bottom: -2px;
+                                left: 0;
+                                width: 100%;
+                                height: 2px;
+                                background: #00ffcc;
+                                transform: scaleX(0);
+                                transition: transform 0.3s ease;
+                            "></span>
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Toggle password visibility
+    document.getElementById('togglePassword').addEventListener('click', function () {
+        const password = document.getElementById('password');
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+        this.querySelector('i').classList.toggle('fa-eye');
+        this.querySelector('i').classList.toggle('fa-eye-slash');
+    });
+
+    document.getElementById('toggleConfirmPassword').addEventListener('click', function () {
+        const confirmPassword = document.getElementById('confirm_password');
+        const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+        confirmPassword.setAttribute('type', type);
+        this.querySelector('i').classList.toggle('fa-eye');
+        this.querySelector('i').classList.toggle('fa-eye-slash');
+    });
+</script>
+{% endblock %}

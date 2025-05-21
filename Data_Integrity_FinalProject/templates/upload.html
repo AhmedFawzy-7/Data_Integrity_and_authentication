@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+
+{% block title %}Upload New Document{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-7">
+        <div class="card border-0 rounded-3" style="
+            background: rgba(10, 26, 26, 0.95);
+            border: 1px solid #00ff88;
+            box-shadow: 0 0 40px rgba(0, 255, 136, 0.3);
+            overflow: hidden;
+        ">
+            <!-- Animated Header -->
+            <div class="card-header" style="
+                background: linear-gradient(135deg, #00ff88, #00cc6a);
+                border-bottom: 1px solid #00ffcc;
+                position: relative;
+            ">
+                <h2 class="card-title mb-0 fw-bold" style="
+                    color: #0a1a1a;
+                    letter-spacing: 1px;
+                    font-family: 'Rajdhani', sans-serif;
+                ">
+                    <i class="fas fa-lock me-2"></i>SECURE UPLOAD TERMINAL
+                </h2>
+                <!-- Scanning Animation -->
+                <div class="position-absolute top-0 start-0 w-100 h-100" style="
+                    background: linear-gradient(
+                        90deg,
+                        transparent,
+                        rgba(255, 255, 255, 0.3),
+                        transparent
+                    );
+                    animation: scan 3s linear infinite;
+                    pointer-events: none;
+                "></div>
+            </div>
+
+            <div class="card-body p-4 p-md-5">
+                <!-- Status Indicator -->
+                <div class="d-flex align-items-center mb-4">
+                    <div class="me-2" style="
+                        width: 12px;
+                        height: 12px;
+                        background: #00ff88;
+                        border-radius: 50%;
+                        box-shadow: 0 0 10px #00ff88;
+                        animation: pulse 2s infinite;
+                    "></div>
+                    <p class="mb-0" style="color: #8aaaaa; font-size: 0.9rem;">
+                        SYSTEM STATUS: <span style="color: #00ff88;">SECURE CHANNEL ACTIVE</span>
+                    </p>
+                </div>
+
+                <p class="card-text mb-4" style="color: #8aaaaa;">
+                    <i class="fas fa-shield-alt me-2" style="color: #00ffcc;"></i>
+                    SELECT FILE FOR ENCRYPTION PROTOCOL. 
+                    <br>SUPPORTED FORMATS: <span style="color: #00ff88;">PDF, DOCX, TXT</span>. 
+                    <br>MAXIMUM SIZE: <span style="color: #00ff88;">{{ config.MAX_CONTENT_LENGTH // (1024*1024) }}MB</span>.
+                </p>
+
+                <form method="POST" enctype="multipart/form-data" action="{{ url_for('documents.upload') }}" novalidate>
+                    <!-- Custom File Input -->
+                    <div class="mb-4">
+                        <label for="file" class="form-label" style="
+                            color: #00ffcc;
+                            font-weight: 600;
+                            letter-spacing: 0.5px;
+                        ">
+                            <i class="fas fa-file-import me-2"></i>SELECT ASSET:
+                        </label>
+                        <div class="file-upload-wrapper" style="position: relative;">
+                            <input type="file" class="form-control" id="file" name="file" accept=".pdf,.docx,.txt" required style="
+                                background: rgba(10, 26, 26, 0.8);
+                                border: 1px dashed #00ff88;
+                                color: #00ffcc;
+                                padding: 1.5rem;
+                                border-radius: 0.5rem;
+                                transition: all 0.3s ease;
+                            ">
+                            <div class="file-upload-placeholder" style="
+                                position: absolute;
+                                top: 50%;
+                                left: 1.5rem;
+                                transform: translateY(-50%);
+                                color: #4a6a6a;
+                                pointer-events: none;
+                            ">
+                                <i class="fas fa-search me-2"></i>
+                            </div>
+                        </div>
+                        <div class="form-text mt-2" style="color: #4a6a6a;">
+                            <i class="fas fa-exclamation-triangle me-1"></i> 
+                        </div>
+                    </div>
+
+                    <!-- Upload Button -->
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-lg rounded-pill" style="
+                            background: linear-gradient(135deg, #00ff88, #00cc6a);
+                            color: #0a1a1a;
+                            font-weight: 700;
+                            letter-spacing: 1px;
+                            border: none;
+                            box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+                            padding: 1rem;
+                            transition: all 0.3s ease;
+                            position: relative;
+                            overflow: hidden;
+                        ">
+                            <i class="fas fa-lock me-2"></i>INITIATE ENCRYPTED UPLOAD
+                            <span class="position-absolute top-0 start-0 w-100 h-100" style="
+                                background: linear-gradient(
+                                    90deg,
+                                    transparent,
+                                    rgba(255, 255, 255, 0.2),
+                                    transparent
+                                );
+                                transform: translateX(-100%);
+                            "></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* File Input Dynamic Effects */
+    input[type="file"]::-webkit-file-upload-button {
+        visibility: hidden;
+    }
+    
+    input[type="file"]::before {
+        content: 'BROWSE FILES';
+        position: absolute;
+        right: 1.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+        background: linear-gradient(135deg, #00ff88, #00cc6a);
+        color: #0a1a1a;
+        padding: 0.5rem 1.5rem;
+        border-radius: 0.25rem;
+        font-weight: 600;
+        cursor: pointer;
+    }
+    
+    input[type="file"]:hover::before {
+        background: linear-gradient(135deg, #00ffcc, #0095a1);
+    }
+    
+    input[type="file"]:focus {
+        border-color: #00ffcc !important;
+        box-shadow: 0 0 0 0.25rem rgba(0, 255, 204, 0.25) !important;
+    }
+    
+    /* Animations */
+    @keyframes scan {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+    }
+    
+    @keyframes pulse {
+        0% { opacity: 0.7; }
+        50% { opacity: 1; box-shadow: 0 0 15px #00ff88; }
+        100% { opacity: 0.7; }
+    }
+    
+    /* Button Hover Effects */
+    button:hover span {
+        animation: shine 1.5s;
+    }
+    
+    @keyframes shine {
+        100% { transform: translateX(100%); }
+    }
+    
+    /* File Selection Feedback */
+    input[type="file"]:valid + .file-upload-placeholder {
+        display: none;
+    }
+</style>
+
+<script>
+    // Dynamic file name display
+    document.getElementById('file').addEventListener('change', function(e) {
+        const fileName = e.target.files[0]?.name || 'NO FILE SELECTED';
+        const placeholder = document.querySelector('.file-upload-placeholder');
+        placeholder.innerHTML = `<i class="fas fa-file-alt me-2"></i>${fileName}`;
+        placeholder.style.color = '#00ff88';
+    });
+</script>
+{% endblock %}

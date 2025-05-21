@@ -1,0 +1,241 @@
+{% extends "base.html" %}
+
+{% block title %}My Profile{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header with Glow Effect -->
+    <h1 class="h2 pb-3 mb-4" style="
+        color: #00ff88;
+        text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+        font-family: 'Rajdhani', sans-serif;
+        letter-spacing: 1px;
+        border-bottom: 1px solid rgba(0, 255, 136, 0.3);
+    ">
+        <i class="fas fa-user-shield me-2"></i>SECURITY PROTOCOL CONFIGURATION
+    </h1>
+
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <!-- Main Card with Grid Background -->
+            <div class="card border-0 rounded-3" style="
+                background: rgba(10, 26, 26, 0.95);
+                border: 1px solid #00ff88;
+                box-shadow: 0 0 40px rgba(0, 255, 136, 0.2);
+                overflow: hidden;
+            ">
+                <div class="card-body p-4 p-md-5">
+                    <!-- Grid Overlay -->
+                    <div class="position-absolute top-0 start-0 w-100 h-100" style="
+                        background-image: 
+                            linear-gradient(rgba(0, 255, 136, 0.05) 1px, transparent 1px),
+                            linear-gradient(90deg, rgba(0, 255, 136, 0.05) 1px, transparent 1px);
+                        background-size: 20px 20px;
+                        opacity: 0.3;
+                        pointer-events: none;
+                        z-index: 0;
+                    "></div>
+                    
+                    <div class="position-relative" style="z-index: 1;">
+                        <!-- Account Information Section -->
+                        <h3 class="card-title mb-4" style="color: #00ffcc;">
+                            <i class="fas fa-id-card me-2"></i>IDENTITY VERIFICATION
+                        </h3>
+                        
+                        <form method="POST" action="{{ url_for('rbac.profile') }}" novalidate>
+                            <!-- Email Field -->
+                            <div class="mb-4">
+                                <label for="email" class="form-label" style="color: #66ffaa;">
+                                    <i class="fas fa-at me-2"></i>SECURE ACCESS ID
+                                </label>
+                                <input type="email" class="form-control form-control-lg rounded-pill" id="email" name="email" 
+                                    value="{{ current_user.email }}" disabled readonly style="
+                                    background: rgba(10, 26, 26, 0.8);
+                                    border: 1px solid #00ff88;
+                                    color: #00ffcc;
+                                ">
+                                <div class="form-text mt-2" style="color: #4a6a6a;">
+                                    <i class="fas fa-lock me-1"></i> PRIMARY IDENTIFIER IS IMMUTABLE
+                                </div>
+                            </div>
+
+                            <hr style="border-color: rgba(0, 255, 136, 0.3); margin: 2rem 0;">
+
+                            <!-- Password Change Section -->
+                            <h4 class="mb-3" style="color: #00ffcc;">
+                                <i class="fas fa-key me-2"></i>CRYPTOGRAPHIC KEY UPDATE
+                            </h4>
+                            
+                            {% if not current_user.password %}
+                            <div class="alert rounded-3 mb-4" style="
+                                background: rgba(0, 204, 255, 0.1);
+                                border: 1px solid #00ccff;
+                                color: #66d9ff;
+                            ">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                EXTERNAL AUTHENTICATION DETECTED. SET LOCAL KEY FOR DIRECT ACCESS.
+                            </div>
+                            {% endif %}
+                            
+                            <div class="mb-4">
+                                <label for="current_password" class="form-label" style="color: #66ffaa;">
+                                    <i class="fas fa-fingerprint me-2"></i>CURRENT KEY VERIFICATION
+                                </label>
+                                <input type="password" class="form-control form-control-lg rounded-pill" 
+                                    id="current_password" name="current_password" style="
+                                    background: rgba(10, 26, 26, 0.8);
+                                    border: 1px solid #00ff88;
+                                    color: #00ffcc;
+                                " {% if not current_user.password %}placeholder="OPTIONAL FOR FIRST-TIME KEY SETUP"{% endif %}>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="new_password" class="form-label" style="color: #66ffaa;">
+                                    <i class="fas fa-lock me-2"></i>NEW CRYPTOGRAPHIC KEY
+                                </label>
+                                <input type="password" class="form-control form-control-lg rounded-pill" 
+                                    id="new_password" name="new_password" minlength="8" style="
+                                    background: rgba(10, 26, 26, 0.8);
+                                    border: 1px solid #00ff88;
+                                    color: #00ffcc;
+                                ">
+                                <div class="form-text mt-2" style="color: #4a6a6a;">
+                                    <i class="fas fa-info-circle me-1"></i> MINIMUM 8 CHARACTERS REQUIRED
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="confirm_new_password" class="form-label" style="color: #66ffaa;">
+                                    <i class="fas fa-lock me-2"></i>KEY CONFIRMATION
+                                </label>
+                                <input type="password" class="form-control form-control-lg rounded-pill" 
+                                    id="confirm_new_password" name="confirm_new_password" style="
+                                    background: rgba(10, 26, 26, 0.8);
+                                    border: 1px solid #00ff88;
+                                    color: #00ffcc;
+                                ">
+                            </div>
+                            
+                            <div class="d-grid mt-4">
+                                <button type="submit" class="btn btn-lg rounded-pill" style="
+                                    background: linear-gradient(135deg, #00ff88, #00cc6a);
+                                    color: #0a1a1a;
+                                    font-weight: 700;
+                                    letter-spacing: 1px;
+                                    border: none;
+                                    box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+                                    padding: 1rem;
+                                    transition: all 0.3s ease;
+                                    position: relative;
+                                    overflow: hidden;
+                                ">
+                                    <i class="fas fa-shield-alt me-2"></i>UPDATE SECURITY PROTOCOLS
+                                    <span class="position-absolute top-0 start-0 w-100 h-100" style="
+                                        background: linear-gradient(
+                                            90deg,
+                                            transparent,
+                                            rgba(255, 255, 255, 0.2),
+                                            transparent
+                                        );
+                                        transform: translateX(-100%);
+                                    "></span>
+                                </button>
+                            </div>
+                        </form>
+
+                        <hr style="border-color: rgba(0, 255, 136, 0.3); margin: 2rem 0;">
+
+                        <!-- 2FA Section -->
+                        <h4 class="mb-3" style="color: #00ffcc;">
+                            <i class="fas fa-mobile-alt me-2"></i>BIOMETRIC VERIFICATION (2FA)
+                        </h4>
+                        
+                        {% if current_user.twofa_secret %}
+                            <div class="alert rounded-3 mb-4 d-flex align-items-center" style="
+                                background: rgba(0, 255, 136, 0.1);
+                                border: 1px solid #00ff88;
+                                color: #66ffaa;
+                            ">
+                                <i class="fas fa-check-circle fa-2x me-3" style="color: #00ff88;"></i>
+                                <div>
+                                    <strong style="color: #00ff88;">SECURITY LAYER ACTIVE</strong><br>
+                                    Biometric verification required for all access attempts
+                                </div>
+                            </div>
+                            <a href="{{ url_for('auth.disable_2fa') }}" class="btn rounded-pill" style="
+                                background: rgba(255, 51, 102, 0.2);
+                                color: #ff3366;
+                                border: 1px solid #ff3366;
+                                transition: all 0.3s ease;
+                                font-weight: 600;
+                            ">
+                                <i class="fas fa-ban me-2"></i>DEACTIVATE BIOMETRICS
+                            </a>
+                        {% else %}
+                            <div class="alert rounded-3 mb-4 d-flex align-items-center" style="
+                                background: rgba(255, 204, 0, 0.1);
+                                border: 1px solid #ffcc00;
+                                color: #ffdb4d;
+                            ">
+                                <i class="fas fa-exclamation-triangle fa-2x me-3" style="color: #ffcc00;"></i>
+                                <div>
+                                    <strong style="color: #ffcc00;">SECURITY LAYER INACTIVE</strong><br>
+                                    Critical vulnerability detected without biometric verification
+                                </div>
+                            </div>
+                            <a href="{{ url_for('auth.setup_2fa') }}" class="btn rounded-pill" style="
+                                background: linear-gradient(135deg, #00ffcc, #0095a1);
+                                color: #0a1a1a;
+                                font-weight: 700;
+                                border: none;
+                                box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
+                                transition: all 0.3s ease;
+                            ">
+                                <i class="fas fa-fingerprint me-2"></i>ACTIVATE BIOMETRICS
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Form Input Focus Effects */
+    .form-control:focus {
+        border-color: #00ffcc !important;
+        box-shadow: 0 0 0 0.25rem rgba(0, 255, 204, 0.25) !important;
+        background: rgba(10, 26, 26, 0.9) !important;
+        color: #00ffcc !important;
+    }
+    
+    /* Button Hover Effects */
+    .btn:hover {
+        transform: translateY(-3px) !important;
+        box-shadow: 0 0 30px rgba(0, 255, 136, 0.6) !important;
+    }
+    
+    /* Shine Animation */
+    button:hover span {
+        animation: shine 1.5s;
+    }
+    
+    @keyframes shine {
+        100% {
+            transform: translateX(100%);
+        }
+    }
+    
+    /* Alert Icons */
+    .fa-check-circle {
+        animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+        0% { opacity: 0.8; }
+        50% { opacity: 1; text-shadow: 0 0 10px currentColor; }
+        100% { opacity: 0.8; }
+    }
+</style>
+{% endblock %}

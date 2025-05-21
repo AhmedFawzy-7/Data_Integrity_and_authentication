@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Access Forbidden (403){% endblock %}
+
+{% block content %}
+<div class="container text-center py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg border-0 rounded-3 p-4">
+                <i class="fas fa-hand-paper fa-5x text-warning mb-4"></i>
+                <h1 class="display-1 fw-bold">403</h1>
+                <h2 class="mb-3">Access Forbidden!</h2>
+                <p class="lead mb-4">
+                    Sorry, you do not have permission to access this page or resource.
+                    If you believe this is an error, please contact the administrator.
+                </p>
+                <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg rounded-pill">
+                    <i class="fas fa-home me-2"></i>Go to Homepage
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

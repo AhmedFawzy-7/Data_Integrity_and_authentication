@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header with Glow Effect -->
+    <header class="pb-3 mb-4 border-bottom" style="border-color: rgba(0, 255, 136, 0.3) !important;">
+        <h1 class="h2" style="
+            color: #00ff88;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+            font-family: 'Rajdhani', sans-serif;
+            letter-spacing: 1px;
+        ">
+            <i class="fas fa-terminal me-2"></i>SYSTEM DASHBOARD // <span style="color: #00ffcc;">{{ current_user.email|truncate(20) }}</span>
+        </h1>
+    </header>
+
+    <!-- Main Cards Grid -->
+    <div class="row align-items-md-stretch">
+        <!-- Documents Card -->
+        <div class="col-md-6 mb-4">
+            <div class="h-100 p-5 rounded-3" style="
+                background: rgba(10, 26, 26, 0.9);
+                border: 1px solid #00ff88;
+                box-shadow: 0 0 30px rgba(0, 255, 136, 0.2);
+                position: relative;
+                overflow: hidden;
+            ">
+                <!-- Animated Grid Overlay -->
+                <div class="position-absolute top-0 start-0 w-100 h-100" style="
+                    background-image: 
+                        linear-gradient(rgba(0, 255, 136, 0.05) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(0, 255, 136, 0.05) 1px, transparent 1px);
+                    background-size: 20px 20px;
+                    opacity: 0.5;
+                    pointer-events: none;
+                "></div>
+                
+                <h2 style="color: #00ffcc;">
+                    <i class="fas fa-file-code me-2"></i>DOCUMENT VAULT
+                </h2>
+                <p style="color: #8aaaaa;">
+                    SECURE STORAGE CONTAINS <strong style="color: #00ff88;">{{ document_count }}</strong> ENCRYPTED ASSET(S)
+                </p>
+                <div class="d-flex flex-wrap">
+                    <a href="{{ url_for('documents.list_documents') }}" class="btn btn-outline-light btn-lg rounded-pill px-4 me-2 mb-2" style="
+                        border-color: #00ff88;
+                        color: #00ff88;
+                        transition: all 0.3s ease;
+                    ">
+                        <i class="fas fa-database me-2"></i>ACCESS VAULT
+                    </a>
+                    <a href="{{ url_for('documents.upload') }}" class="btn btn-lg rounded-pill px-4 mb-2" style="
+                        background: linear-gradient(135deg, #00ff88, #00cc6a);
+                        color: #0a1a1a;
+                        font-weight: 700;
+                        border: none;
+                        box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+                        transition: all 0.3s ease;
+                    ">
+                        <i class="fas fa-upload me-2"></i>UPLOAD ASSET
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Account Settings Card -->
+        <div class="col-md-6 mb-4">
+            <div class="h-100 p-5 rounded-3" style="
+                background: rgba(10, 26, 26, 0.9);
+                border: 1px solid #00ffcc;
+                box-shadow: 0 0 30px rgba(0, 255, 204, 0.2);
+            ">
+                <h2 style="color: #00ffcc;">
+                    <i class="fas fa-user-shield me-2"></i>SECURITY PROFILE
+                </h2>
+                <p style="color: #8aaaaa;">
+                    IDENTITY VERIFICATION AND ACCESS CONTROLS
+                </p>
+                <div class="d-flex flex-wrap">
+                    <a href="{{ url_for('rbac.profile') }}" class="btn btn-outline-light btn-lg rounded-pill px-4 me-2 mb-2" style="
+                        border-color: #00ffcc;
+                        color: #00ffcc;
+                        transition: all 0.3s ease;
+                    ">
+                        <i class="fas fa-user-edit me-2"></i>EDIT PROFILE
+                    </a>
+                    {% if not current_user.twofa_secret %}
+                        <a href="{{ url_for('auth.setup_2fa') }}" class="btn btn-lg rounded-pill px-4 mb-2" style="
+                            background: linear-gradient(135deg, #00ffcc, #0095a1);
+                            color: #0a1a1a;
+                            font-weight: 700;
+                            border: none;
+                            box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
+                            transition: all 0.3s ease;
+                        ">
+                            <i class="fas fa-lock me-2"></i>ACTIVATE 2FA
+                        </a>
+                    {% else %}
+                        <a href="{{ url_for('auth.disable_2fa') }}" class="btn btn-lg rounded-pill px-4 mb-2" style="
+                            background: linear-gradient(135deg, #ff3366, #cc0044);
+                            color: #0a1a1a;
+                            font-weight: 700;
+                            border: none;
+                            box-shadow: 0 0 20px rgba(255, 51, 102, 0.3);
+                            transition: all 0.3s ease;
+                        ">
+                            <i class="fas fa-lock-open me-2"></i>DEACTIVATE 2FA
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel (Conditional) -->
+    {% if is_admin_user %}
+    <div class="mt-4 p-5 rounded-3" style="
+        background: rgba(10, 26, 26, 0.9);
+        border: 1px solid #ffcc00;
+        box-shadow: 0 0 30px rgba(255, 204, 0, 0.2);
+        position: relative;
+        overflow: hidden;
+    ">
+        <!-- Diagonal Stripe Pattern -->
+        <div class="position-absolute top-0 start-0 w-100 h-100" style="
+            background: repeating-linear-gradient(
+                45deg,
+                rgba(255, 204, 0, 0.05),
+                rgba(255, 204, 0, 0.05) 10px,
+                transparent 10px,
+                transparent 20px
+            );
+            pointer-events: none;
+        "></div>
+        
+        <h2 style="color: #ffcc00;">
+            <i class="fas fa-user-secret me-2"></i>ADMINISTRATIVE TERMINAL
+        </h2>
+        <p style="color: #8aaaaa;">
+            SYSTEM-LEVEL ACCESS PRIVILEGES DETECTED
+        </p>
+        <div class="d-flex flex-wrap">
+            <a href="{{ url_for('rbac.list_users') }}" class="btn btn-lg rounded-pill px-4 me-2 mb-2" style="
+                background: linear-gradient(135deg, #ffcc00, #cc9900);
+                color: #0a1a1a;
+                font-weight: 700;
+                border: none;
+                box-shadow: 0 0 20px rgba(255, 204, 0, 0.3);
+                transition: all 0.3s ease;
+            ">
+                <i class="fas fa-users-cog me-2"></i>USER MANAGEMENT
+            </a>
+            <a href="{{ url_for('security.audit_logs_list') }}" class="btn btn-outline-light btn-lg rounded-pill px-4 mb-2" style="
+                border-color: #ffcc00;
+                color: #ffcc00;
+                transition: all 0.3s ease;
+            ">
+                <i class="fas fa-clipboard-list me-2"></i>AUDIT LOGS
+            </a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    /* Interactive Effects */
+    .btn-outline-light:hover {
+        background: rgba(0, 255, 136, 0.1) !important;
+        box-shadow: 0 0 30px rgba(0, 255, 136, 0.4) !important;
+    }
+    
+    .btn:hover {
+        transform: translateY(-3px) !important;
+        filter: brightness(1.1) !important;
+    }
+    
+    /* Card Hover Effects */
+    .col-md-6 > div:hover {
+        transform: translateY(-5px);
+        transition: all 0.3s ease;
+    }
+    
+    /* Terminal-like Blinking Cursor Effect */
+    @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0; }
+    }
+    
+    .h2 i.fa-terminal::after {
+        content: '|';
+        animation: blink 1s step-end infinite;
+        margin-left: 2px;
+        color: #00ff88;
+    }
+</style>
+{% endblock %}

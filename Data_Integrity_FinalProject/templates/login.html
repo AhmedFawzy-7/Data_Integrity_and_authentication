@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-lg border-0 rounded-3" style="
+            background: rgba(10, 26, 26, 0.95);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.2), 
+                        inset 0 0 20px rgba(0, 255, 204, 0.1);
+            overflow: hidden;
+        ">
+            <div class="card-body p-4 p-md-5 position-relative">
+                <!-- Animated Glow Effect -->
+                <div class="position-absolute top-0 start-0 w-100 h-100" style="
+                    background: radial-gradient(circle at 50% 0%, 
+                    rgba(0, 255, 136, 0.1) 0%, 
+                    transparent 70%);
+                    pointer-events: none;
+                    z-index: 0;
+                "></div>
+                
+                <div class="position-relative" style="z-index: 1;">
+                    <h2 class="card-title text-center mb-4 fw-bold" style="
+                        color: #00ff88;
+                        text-shadow: 0 0 10px rgba(0, 255, 136, 0.4);
+                        letter-spacing: 1px;
+                        font-family: 'Rajdhani', sans-serif;
+                    ">
+                        <i class="fas fa-shield-alt me-2"></i>SECURE<span style="color: #00ffcc;">DOCS</span>
+                    </h2>
+                    
+                    <form method="POST" action="{{ url_for('auth.login', next=request.args.get('next')) }}" novalidate>
+                        <!-- Email Field -->
+                        <div class="mb-4">
+                            <label for="email" class="form-label" style="color: #66ffaa;">
+                                <i class="fas fa-envelope me-2"></i>email
+                            </label>
+                            <input type="email" class="form-control form-control-lg rounded-pill" id="email" name="email" required autofocus style="
+                                background: rgba(10, 26, 26, 0.8);
+                                border: 1px solid #00ff88;
+                                color: #00ffcc;
+                                box-shadow: 0 0 15px rgba(0, 255, 136, 0.1);
+                                transition: all 0.3s ease;
+                            ">
+                        </div>
+                        
+                        <!-- Password Field -->
+                        <div class="mb-4">
+                            <label for="password" class="form-label" style="color: #66ffaa;">
+                                <i class="fas fa-key me-2"></i>password
+                            </label>
+                            <input type="password" class="form-control form-control-lg rounded-pill" id="password" name="password" required style="
+                                background: rgba(10, 26, 26, 0.8);
+                                border: 1px solid #00ff88;
+                                color: #00ffcc;
+                                box-shadow: 0 0 15px rgba(0, 255, 136, 0.1);
+                                transition: all 0.3s ease;
+                            ">
+                        </div>
+                        
+                        <!-- Login Button -->
+                        <div class="d-grid mb-4">
+                            <button type="submit" class="btn btn-lg rounded-pill" style="
+                                background: linear-gradient(135deg, #00ff88, #00cc6a);
+                                color: #0a1a1a;
+                                font-weight: 700;
+                                letter-spacing: 1px;
+                                border: none;
+                                box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+                                transition: all 0.3s ease;
+                                height: 50px;
+                            ">
+                                <i class="fas fa-terminal me-2"></i>INITIATE LOGIN
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <!-- Social Login Divider -->
+                    <div class="position-relative my-4">
+                        <hr style="border-color: rgba(0, 255, 136, 0.3);">
+                        <div class="position-absolute top-50 start-50 translate-middle px-2" style="
+                            background: rgba(10, 26, 26, 0.9);
+                            color: #00ff88;
+                            font-size: 0.9rem;
+                        ">
+                            OR VERIFY WITH
+                        </div>
+                    </div>
+                    
+                    <!-- Social Login Buttons -->
+                    <div class="d-grid gap-3">
+                        <a href="{{ url_for('auth.github_login') }}" class="btn btn-outline-light btn-lg rounded-pill" style="
+                            border-color: #00ff88;
+                            color: #00ff88;
+                            transition: all 0.3s ease;
+                            position: relative;
+                            overflow: hidden;
+                        ">
+                            <i class="fab fa-github me-2"></i>GITHUB AUTH
+                            <span class="position-absolute top-0 start-0 w-100 h-100" style="
+                                background: linear-gradient(90deg, 
+                                transparent, 
+                                rgba(0, 255, 136, 0.2), 
+                                transparent);
+                                transform: translateX(-100%);
+                            "></span>
+                        </a>
+                        
+                        <a href="{{ url_for('auth.auth0_login') }}" class="btn btn-outline-light btn-lg rounded-pill" style="
+                            border-color: #00ffcc;
+                            color: #00ffcc;
+                            transition: all 0.3s ease;
+                        ">
+                            <i class="fas fa-fingerprint me-2"></i>AUTH0 VERIFICATION
+                        </a>
+                    </div>
+                    
+                    <!-- Signup Link -->
+                    <div class="text-center mt-4">
+                        <p class="mb-0" style="color: #6a8a8a;">
+                            UNAUTHORIZED ACCESS? <a href="{{ url_for('auth.signup') }}" style="
+                                color: #00ffcc;
+                                text-decoration: none;
+                                font-weight: 700;
+                                position: relative;
+                            ">
+                                REQUEST CLEARANCE
+                                <span style="
+                                    position: absolute;
+                                    bottom: -2px;
+                                    left: 0;
+                                    width: 100%;
+                                    height: 2px;
+                                    background: #00ffcc;
+                                    transform: scaleX(0);
+                                    transition: transform 0.3s ease;
+                                "></span>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Interactive Effects */
+    .form-control:focus {
+        border-color: #00ffcc !important;
+        box-shadow: 0 0 0 0.25rem rgba(0, 255, 204, 0.25) !important;
+        background: rgba(10, 26, 26, 0.9) !important;
+        color: #00ffcc !important;
+    }
+    
+    .btn-outline-light:hover {
+        background: rgba(0, 255, 136, 0.1) !important;
+        box-shadow: 0 0 30px rgba(0, 255, 136, 0.3) !important;
+    }
+    
+    a:hover span {
+        transform: scaleX(1) !important;
+    }
+    
+    /* Button Hover Animation */
+    .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 0 30px rgba(0, 255, 136, 0.6) !important;
+    }
+    
+    /* Social Button Animation */
+    .btn-outline-light:hover span {
+        animation: shine 1.5s;
+    }
+    
+    @keyframes shine {
+        100% {
+            transform: translateX(100%);
+        }
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Edit User - {{ user_to_edit.email }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="h2 pb-3 mb-4 border-bottom"><i class="fas fa-user-edit me-2"></i>Edit User: {{ user_to_edit.email }}</h1>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg border-0 rounded-3">
+                <div class="card-body p-4 p-md-5">
+                    <form method="POST" action="{{ url_for('rbac.edit_user', user_id=user_to_edit.id) }}" novalidate>
+                        <div class="mb-3">
+                            <label for="email" class="form-label"><i class="fas fa-envelope me-2"></i>Email Address</label>
+                            <input type="email" class="form-control form-control-lg rounded-pill" id="email" name="email" value="{{ user_to_edit.email }}" disabled readonly>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="role" class="form-label"><i class="fas fa-user-tag me-2"></i>Role</label>
+                            <select class="form-select form-select-lg rounded-pill" id="role" name="role" {% if user_to_edit.id == current_user.id and user_to_edit.role == 'admin' %}disabled title="You cannot change your own admin role."{% endif %}>
+                                {% for role_option in roles %}
+                                <option value="{{ role_option }}" {% if user_to_edit.role == role_option %}selected{% endif %}>
+                                    {{ role_option|capitalize }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                             {% if user_to_edit.id == current_user.id and user_to_edit.role == 'admin' %}
+                                <div class="form-text text-warning"><i class="fas fa-exclamation-triangle me-1"></i>You cannot change your own admin role.</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg rounded-pill" {% if user_to_edit.id == current_user.id and user_to_edit.role == 'admin' %}disabled{% endif %}>
+                                <i class="fas fa-save me-2"></i>Save Changes
+                            </button>
+                            <a href="{{ url_for('rbac.list_users') }}" class="btn btn-outline-secondary btn-lg rounded-pill"><i class="fas fa-times me-2"></i>Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

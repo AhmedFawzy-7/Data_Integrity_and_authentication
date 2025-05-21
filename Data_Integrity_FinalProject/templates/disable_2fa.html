@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Disable Two-Factor Authentication{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-lg border-0 rounded-3">
+            <div class="card-header bg-warning text-dark">
+                 <h2 class="card-title mb-0 fw-bold"><i class="fas fa-exclamation-triangle me-2"></i>Disable Two-Factor Authentication (2FA)</h2>
+            </div>
+            <div class="card-body p-4 p-md-5">
+                <p class="lead">Are you sure you want to disable 2FA? This will reduce the security of your account.</p>
+                <p>To proceed, please enter your current password.</p>
+                
+                <form method="POST" action="{{ url_for('auth.disable_2fa') }}" novalidate>
+                    <div class="mb-3">
+                        <label for="password" class="form-label"><i class="fas fa-lock me-2"></i>Current Password</label>
+                        <input type="password" class="form-control form-control-lg rounded-pill" id="password" name="password" required>
+                    </div>
+                    
+                    {# Optional: Ask for a 2FA code as well for extra security before disabling #}
+                    {#
+                    <div class="mb-3">
+                        <label for="code" class="form-label"><i class="fas fa-key me-2"></i>Current 2FA Code (Optional)</label>
+                        <input type="text" class="form-control form-control-lg rounded-pill" id="code" name="code" placeholder="Enter 6-digit code" pattern="\d{6}" maxlength="6" inputmode="numeric">
+                    </div>
+                    #}
+
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-danger btn-lg rounded-pill"><i class="fas fa-key-slash me-2"></i>Confirm and Disable 2FA</button>
+                        <a href="{{ url_for('rbac.profile') }}" class="btn btn-outline-secondary btn-lg rounded-pill"><i class="fas fa-times me-2"></i>Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
